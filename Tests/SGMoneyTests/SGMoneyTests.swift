@@ -11,12 +11,33 @@ final class SGMoneyTests: XCTestCase {
     }
     
     func testToString() throws {
-        let money = Money(amount: 17.42, currency: .eur)
+        let money = Money(amount: 17.42)
         XCTAssertEqual(money.string(), "17.42 EUR")
     }
     
     func testIsNegative() throws {
-        let money = Money(amount: -17.42, currency: .eur)
+        let money = Money(amount: -17.42)
         XCTAssertTrue(money.isNegative())
+    }
+    
+    func testAdd() throws {
+        let four = Money(amount: 4.0)
+        let five = Money(amount: 5.0)
+        let nine = Money(amount: 9.0)
+        XCTAssertEqual(nine, four + five)
+    }
+
+    func testSub() throws {
+        let four = Money(amount: 4.0)
+        let five = Money(amount: 5.0)
+        let nine = Money(amount: 9.0)
+        XCTAssertEqual(four, nine - five)
+    }
+    
+    func testMultiply() throws {
+        let four = Money(amount: 4.0)
+        let eight = Money(amount: 8.0)
+        XCTAssertEqual(eight, four * 2)
+        XCTAssertEqual(eight, 2 * four)
     }
 }

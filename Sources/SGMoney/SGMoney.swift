@@ -1,16 +1,10 @@
 import Foundation
 
-enum Currency: String, Codable {
-    case eur = "EUR"
-    case usd = "USD"
-}
-public struct Money {
+struct Money: Codable {
     let amount: Decimal
-    let currency: Currency
     
-    init(amount: Decimal, currency: Currency = .eur) {
+    init(amount: Decimal) {
         self.amount = amount
-        self.currency = currency
     }
 }
 
@@ -18,21 +12,42 @@ extension Money {
     init(from string: String) {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
-        formatter.numberStyle = .decimal
-        if let formattedNumber = formatter.number(from: string) as? NSDecimalNumber {
+        formatter.numberStyle = NumberFormatter.Style.decimal
+        if let formattedNumber = formatter.number(from: string) as? NSDecimalNumber  {
             amount = formattedNumber as Decimal
         } else {
             amount = 0.0
         }
-        self.currency = .eur
+    }
+
+    func string(precision: Int = 2) -> String {
+        "\(amount.string(precision: precision)) EUR"
     }
     
-    func string(precision: Int = 2) -> String {
-            "\(amount.string(precision: precision)) \(currency.rawValue)"
-        }
-        
     func isNegative() -> Bool {
-            amount.isNegative()
+        amount.isNegative()
+    }
+}
+
+extension Money: AdditiveArithmetic {
+    static var zero: Money {
+        Money(amount: 0.0)
+    }
+    
+    static func +(lhs: Money, rhs: Money) -> Money {
+        Money(amount: lhs.amount + rhs.amount)
+    }
+
+    static func - (lhs: Money, rhs: Money) -> Money {
+        Money(amount: lhs.amount - rhs.amount)
+    }
+    
+    static func * (lhs: Money, rhs: Decimal) -> Money {
+        Money(amount: lhs.amount * rhs)
+    }
+
+    static func * (lhs: Decimal, rhs: Money) -> Money {
+        Money(amount: lhs * rhs.amount)
     }
 }
 
@@ -41,7 +56,6 @@ extension Decimal {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
         formatter.numberStyle = NumberFormatter.Style.decimal
-        formatter.locale = Locale(identifier: "US_en")
         if let formattedNumber = formatter.number(from: string) as? NSDecimalNumber  {
             self = formattedNumber as Decimal
         } else {
@@ -67,13 +81,13 @@ extension Decimal {
     }
 }
 
-//extension Array where Self.Element == Decimal {
-//    var normalized: [Element] {
-//        if let maxElement = self.max(),
-//           let minElement = self.min() {
-//            let normalizedElements = self.map { ($0 - minElement) / ( maxElement - minElement)  }
-//            return normalizedElements
-//        }
-//        return self
-//    }
-//}
+extension Array where Self.Element == Decimal {
+    var normalized: [Element] {
+        if let maxElement = self.max(),
+           let minElement = self.min() {
+            let normalizedElements = self.map { ($0 - minElement) / ( maxElement - minElement)  }
+            return normalizedElements
+        }
+        return self
+    }
+}
