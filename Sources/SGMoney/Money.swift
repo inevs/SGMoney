@@ -9,7 +9,7 @@ public struct Money: Codable {
 }
 
 extension Money {
-    init(from string: String) {
+    public init(from string: String) {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
         formatter.numberStyle = NumberFormatter.Style.decimal
@@ -20,11 +20,11 @@ extension Money {
         }
     }
 
-    func string(precision: Int = 2) -> String {
+    public func string(precision: Int = 2) -> String {
         "\(amount.string(precision: precision)) EUR"
     }
     
-    func isNegative() -> Bool {
+    public func isNegative() -> Bool {
         amount.isNegative()
     }
 }
