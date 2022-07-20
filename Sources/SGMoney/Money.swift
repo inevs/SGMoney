@@ -52,7 +52,7 @@ extension Money: AdditiveArithmetic {
 }
 
 extension Decimal {
-    init(from string: String) {
+    public init(from string: String) {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
         formatter.numberStyle = NumberFormatter.Style.decimal
@@ -63,7 +63,7 @@ extension Decimal {
         }
     }
     
-    func string(precision: Int = 2) -> String {
+    public func string(precision: Int = 2) -> String {
         let formatter = NumberFormatter()
         formatter.usesGroupingSeparator = true
         formatter.numberStyle = .decimal
@@ -76,13 +76,13 @@ extension Decimal {
         return "n/a"
     }
     
-    func isNegative() -> Bool {
+    public func isNegative() -> Bool {
         self < 0.0
     }
 }
 
 extension Array where Self.Element == Decimal {
-    var normalized: [Element] {
+    public var normalized: [Element] {
         if let maxElement = self.max(),
            let minElement = self.min() {
             let normalizedElements = self.map { ($0 - minElement) / ( maxElement - minElement)  }
