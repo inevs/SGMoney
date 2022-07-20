@@ -41,6 +41,7 @@ extension Decimal {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
         formatter.numberStyle = NumberFormatter.Style.decimal
+        formatter.locale = Locale(identifier: "US_en")
         if let formattedNumber = formatter.number(from: string) as? NSDecimalNumber  {
             self = formattedNumber as Decimal
         } else {
