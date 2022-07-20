@@ -1,9 +1,9 @@
 import Foundation
 
-struct Money: Codable {
-    let amount: Decimal
+public struct Money: Codable {
+    public let amount: Decimal
     
-    init(amount: Decimal) {
+    public init(amount: Decimal) {
         self.amount = amount
     }
 }
@@ -30,23 +30,23 @@ extension Money {
 }
 
 extension Money: AdditiveArithmetic {
-    static var zero: Money {
+    public static var zero: Money {
         Money(amount: 0.0)
     }
     
-    static func +(lhs: Money, rhs: Money) -> Money {
+    public static func +(lhs: Money, rhs: Money) -> Money {
         Money(amount: lhs.amount + rhs.amount)
     }
 
-    static func - (lhs: Money, rhs: Money) -> Money {
+    public static func - (lhs: Money, rhs: Money) -> Money {
         Money(amount: lhs.amount - rhs.amount)
     }
     
-    static func * (lhs: Money, rhs: Decimal) -> Money {
+    public static func * (lhs: Money, rhs: Decimal) -> Money {
         Money(amount: lhs.amount * rhs)
     }
 
-    static func * (lhs: Decimal, rhs: Money) -> Money {
+    public static func * (lhs: Decimal, rhs: Money) -> Money {
         Money(amount: lhs * rhs.amount)
     }
 }
